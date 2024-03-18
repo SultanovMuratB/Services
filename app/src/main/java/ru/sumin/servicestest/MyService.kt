@@ -36,8 +36,11 @@ class MyService : Service() {
 
     companion object {
 
-        fun newIntent(context: Context) : Intent {
-            return Intent(context, MyService::class.java)
+        private const val EXTRA_START = "start"
+        fun newIntent(context: Context, start: Int) : Intent {
+            return Intent(context, MyService::class.java).apply {
+                putExtra(EXTRA_START, start)
+            }
         }
     }
 }
