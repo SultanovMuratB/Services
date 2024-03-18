@@ -8,6 +8,8 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import ru.sumin.servicestest.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -48,6 +50,14 @@ class MainActivity : AppCompatActivity() {
                 val intent = MyJobService.newIntent(page++)
                 jobScheduler.enqueue(jobInfo, JobWorkItem(intent))
             }
+        }
+        binding.workManager.setOnClickListener {
+            val workManager = WorkManager.getInstance(applicationContext)
+            workManager.enqueueUniqueWork(
+                MyWorker.WOR_NAME,
+                ExistingWorkPolicy.APPEND,
+                MyWorker.makeRequest(page++)
+            )
         }
     }
 }
